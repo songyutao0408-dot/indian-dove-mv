@@ -13,9 +13,11 @@ import { At, Cam, Layer, Shadow, Stage, beatPulse, easeIn, easeInOut, easeOut, l
 /** 一只嗡嗡飞的苍蝇；land = 停下的位置 */
 export const Fly: React.FC<{ f: number; land: [number, number]; landAt: number }> = ({ f, land, landAt }) => {
   const k = Math.min(1, f / landAt);
-  const x = land[0] + (1 - k) * (Math.sin(f / 3) * 160 + 220);
-  const y = land[1] + (1 - k) * (Math.cos(f / 2.3) * 90 - 120);
-  const buzz = onTwos(f) % 4 < 2;
+  // 落下之后在嘴上来回爬、搓脚，翅膀时不时抖一下
+  const crawl = f > landAt ? Math.sin((f - landAt) / 6) * 8 : 0;
+  const x = land[0] + (1 - k) * (Math.sin(f / 3) * 160 + 220) + crawl;
+  const y = land[1] + (1 - k) * (Math.cos(f / 2.3) * 90 - 120) - (f > landAt && Math.floor(f / 4) % 3 === 0 ? 2 : 0);
+  const buzz = f <= landAt ? onTwos(f) % 4 < 2 : Math.floor(f / 8) % 3 === 0 && onTwos(f) % 4 < 2;
   return (
     <g transform={`translate(${x} ${y})`}>
       <ellipse cx={-6} cy={-8} rx={9} ry={5} fill="#DDEAF2" stroke={INK} strokeWidth={2} transform={`rotate(${buzz ? -30 : 10})`} />
@@ -30,14 +32,15 @@ const S7_1: ShotComponent = () => {
   const { f, g, theme } = useShot();
   return (
     <AbsoluteFill>
-      <Cam zoom={1.5} oy={820}>
-        <Desert theme={theme} frame={g} camX={17400} sun={{ x: 1600, y: 140, face: "none" }} />
+      <Cam zoom={lerp(f, [0, 61], [1.42, 1.62])} oy={760}>
+        <Desert theme={theme} frame={g} camX={17400} sun={{ x: 1600, y: 140, face: "none" }} wind={0.6} />
         <Stage>
           <At x={960} y={980} s={1.3}>
             <Shadow rx={140} />
             <Nest s={1.4} />
             <g transform="translate(0 -6)">
-              <Dove frame={g} pose="sit" expression="daze" />
+              {/* 苍蝇落下后，眼珠慢慢往中间斗过去盯着它 */}
+              <Dove frame={g} pose="sit" expression="daze" look={f > 30 ? [lerp(f, [30, 50], [0.15, 0.9]), lerp(f, [30, 50], [0.25, 0.7])] : undefined} />
             </g>
             <Fly f={f} land={[100, -232]} landAt={30} />
           </At>

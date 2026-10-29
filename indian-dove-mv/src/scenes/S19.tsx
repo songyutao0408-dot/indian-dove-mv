@@ -8,7 +8,7 @@ import { LYRIC_FONT } from "../fonts";
 import { DustPuff, Iris, WesternText, WoodBoard } from "../fx";
 import { OldFilmArtifacts } from "../overlay/FilmLook";
 import { CREAM, INK } from "../style/palette";
-import { At, Cam, Layer, Shadow, Stage, beatPulse, easeInOut, easeOut, lerp, sinceBeat, useShot, type ShotComponent } from "./common";
+import { At, Cam, Layer, Shadow, Stage, beatHop, beatPulse, easeInOut, easeOut, lerp, sinceBeat, useShot, type ShotComponent } from "./common";
 import { CastMember, LINEUP, type CastMode } from "./cast";
 
 /** 一排角色；s = 整体比例，spacing = 间距，cx = 队伍中心 */
@@ -22,8 +22,12 @@ const Row: React.FC<{ mode: CastMode; s: number; spacing: number; cx?: number; y
         const from = i < n / 2 ? -300 : 2220;
         const x = from + (target - from) * enter;
         const dove = id === "dove" || id === "hen";
+        // 排好队之后等拍子：跟着节拍轻轻左右摇摆、踮脚
+        const idleSway = mode === "idle" && enter >= 1;
+        const sway = idleSway ? Math.sin((T + i * 0.08) * Math.PI * 1.6) * 4 : 0;
+        const tiptoe = idleSway ? beatHop(T + i * 0.05, 10) : 0;
         return (
-          <At key={id} x={x} y={y} s={s * (dove ? 1.15 : 1)}>
+          <At key={id} x={x} y={y + tiptoe} s={s * (dove ? 1.15 : 1)} r={sway}>
             <Shadow rx={90} />
             <CastMember id={id} g={g} T={T} mode={enter < 1 ? "run" : mode} seed={i} facing={enter < 1 ? (i < n / 2 ? 1 : -1) : i < n / 2 ? 1 : -1} />
             {mode === "dance" && sinceBeat(T) < 0.5 && <DustPuff x={0} y={0} age={Math.round(sinceBeat(T) * 24)} color={theme.sand} />}
@@ -40,10 +44,12 @@ const S19_1: ShotComponent = () => {
   const enter = lerp(f, [0, dur * 0.55], [0, 1], easeInOut);
   return (
     <AbsoluteFill>
-      <Desert theme={theme} frame={g} camX={57000} sun={{ x: 1650, y: lerp(f, [0, dur], [260, 300]), face: "wave" }} />
-      <Stage>
-        <Row mode="idle" s={0.42} spacing={112} y={960} enter={enter} />
-      </Stage>
+      <Cam zoom={lerp(f, [0, dur], [1.0, 1.12], easeInOut)} oy={900}>
+        <Desert theme={theme} frame={g} camX={57000 + f * 1.5} sun={{ x: 1650, y: lerp(f, [0, dur], [260, 300]), face: "wave" }} />
+        <Stage>
+          <Row mode="idle" s={0.42} spacing={112} y={960} enter={enter} />
+        </Stage>
+      </Cam>
     </AbsoluteFill>
   );
 };
