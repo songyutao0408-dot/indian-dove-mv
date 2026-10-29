@@ -3,5 +3,8 @@ import type { ShotComponent } from "./common";
 import { S0 } from "./S0";
 import { S1 } from "./S1";
 import { S2 } from "./S2";
+import { S3 } from "./S3";
+import { S4 } from "./S4";
+import { S5 } from "./S5";
 
-export const SCENES: Record<string, ShotComponent[]> = { S0, S1, S2 };
+export const SCENES: Record<string, ShotComponent[]> = { S0, S1, S2, S3, S4, S5 };

@@ -210,3 +210,49 @@ export const StarField: React.FC<{ frame: number; theme: Theme; width?: number; 
     </g>
   );
 };
+
+/** 水壶（带背带），rot 控制倒过来 */
+export const Canteen: React.FC<{ s?: number; rot?: number }> = ({ s = 1, rot = 0 }) => (
+  <g transform={`rotate(${rot}) scale(${s})`}>
+    <path d="M -50 -60 Q -70 -110 -20 -120" fill="none" stroke={INK} strokeWidth={9} strokeLinecap="round" />
+    <path d="M -50 -60 Q -70 -110 -20 -120" fill="none" stroke="#8E5A34" strokeWidth={5} strokeLinecap="round" />
+    <ellipse cx={0} cy={0} rx={56} ry={62} fill="#7C8C9A" {...ol} />
+    <ellipse cx={0} cy={0} rx={40} ry={46} fill="none" stroke="#5E6C78" strokeWidth={4} />
+    <path d="M -20 -20 q 8 -10 18 -12" fill="none" stroke="#C9D3DA" strokeWidth={6} strokeLinecap="round" />
+    <rect x={-12} y={-82} width={24} height={22} rx={4} fill="#5E6C78" {...dl} />
+    <rect x={-16} y={-92} width={32} height={12} rx={4} fill="#8E5A34" {...dl} />
+  </g>
+);
+
+/** 死掉的甲虫：四脚朝天、X 眼 */
+export const DeadBeetle: React.FC<{ s?: number; frame?: number }> = ({ s = 1, frame = 0 }) => {
+  const twitch = Math.floor(frame / 12) % 5 === 0 ? 4 : 0;
+  return (
+    <g transform={`scale(${s})`}>
+      {[-24, 0, 24].map((x, i) => (
+        <path key={i} d={`M ${x} -30 l ${-6 + i * 6} -26 l ${i === 1 ? 0 : (i - 1) * 8} -8`} fill="none" stroke={INK} strokeWidth={5} strokeLinecap="round" transform={i === 2 ? `rotate(${twitch} ${x} -30)` : undefined} />
+      ))}
+      <ellipse cx={0} cy={-20} rx={44} ry={26} fill="#3E5A6E" {...ol} />
+      <path d="M 0 -44 L 0 4" stroke={INK} strokeWidth={3} />
+      <ellipse cx={52} cy={-14} rx={18} ry={16} fill="#2E4252" {...dl} />
+      <path d="M 46 -22 l 8 8 m -8 0 l 8 -8" stroke={CREAM} strokeWidth={3} />
+      <path d="M 64 -24 q 14 -14 22 -10 M 62 -10 q 16 -2 22 6" fill="none" stroke={INK} strokeWidth={3} />
+    </g>
+  );
+};
+
+/** 鸟窝（一圈乱树枝） */
+export const Nest: React.FC<{ s?: number; twigs?: number }> = ({ s = 1, twigs = 14 }) => {
+  const d = Array.from({ length: twigs }, (_, i) => {
+    const a = (i / twigs) * Math.PI;
+    const x1 = -80 + i * (160 / twigs);
+    return `M ${x1} ${-10 - Math.sin(a) * 6} q 30 ${-14 + (i % 3) * 8} 70 ${4 - (i % 2) * 8}`;
+  }).join(" ");
+  return (
+    <g transform={`scale(${s})`}>
+      <path d="M -90 -24 Q -84 16 0 18 Q 84 16 90 -24 Z" fill="#9A6A40" {...ol} />
+      <path d={d} fill="none" stroke={INK} strokeWidth={7} strokeLinecap="round" />
+      <path d={d} fill="none" stroke="#B88A50" strokeWidth={4} strokeLinecap="round" />
+    </g>
+  );
+};

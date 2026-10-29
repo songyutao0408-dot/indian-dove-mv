@@ -261,13 +261,24 @@ export const Dove: React.FC<DoveProps> = ({
     : [];
 
   // 喙
-  const beakAng = Math.min(48, beakOpen * 30);
+  const beakAng = Math.min(ex === "yawn" ? 80 : 48, beakOpen * (ex === "yawn" ? 50 : 30));
+  // 打哈欠：卡通式大嘴——喙下面张开一个大口腔，下喙挂在嘴底
+  const yawnK = ex === "yawn" ? Math.max(0, Math.min(1, open ?? 1)) : 0;
+  const bigMouth =
+    yawnK > 0.05 ? (
+      <g>
+        <ellipse cx={74} cy={-178 + 18 * yawnK} rx={14 + 22 * yawnK} ry={8 + 34 * yawnK} fill="#6B2A2A" {...dl} />
+        <ellipse cx={74} cy={-170 + 40 * yawnK} rx={8 + 14 * yawnK} ry={4 + 10 * yawnK} fill="#E58C8C" />
+        <path d={`M ${60 - 10 * yawnK} ${-160 + 52 * yawnK} L ${88 + 6 * yawnK} ${-160 + 52 * yawnK} Q ${80} ${-150 + 60 * yawnK} ${64} ${-152 + 58 * yawnK} Z`} fill={DOVE.beak} {...dl} />
+      </g>
+    ) : null;
   const beak = (
     <g>
-      {beakOpen > 0.05 && (
+      {bigMouth}
+      {yawnK <= 0.05 && beakOpen > 0.05 && (
         <path d={`M 84 -200 L 108 -199 L ${86 + 22 * Math.cos((beakAng * Math.PI) / 180)} ${-200 + 22 * Math.sin((beakAng * Math.PI) / 180)} Z`} fill="#6B2A2A" />
       )}
-      <g transform={`rotate(${beakAng} 86 -200)`}>
+      <g transform={`rotate(${beakAng} 86 -200)`} display={yawnK > 0.05 ? "none" : undefined}>
         <path d="M 84 -200 L 106 -200 Q 103 -189 88 -188 Z" fill={DOVE.beak} {...dl} />
         {(ex === "loopy" || ex === "yawn") && <ellipse cx={95} cy={-196} rx={7} ry={4} fill="#E58C8C" />}
       </g>
