@@ -13,6 +13,8 @@ export type Palette = {
   /** 色偏强度 0–1 */
   tintAmount: number;
   sun: string;
+  /** 夜晚程度 0–1：控制星星、月光、角色压暗 */
+  night: number;
 };
 
 export const INK = "#3A2418"; // 描边：深棕黑，不用纯黑
@@ -31,6 +33,7 @@ export const PALETTES: Record<"day" | "dusk" | "night" | "dawn", Palette> = {
     tint: "#FFFFFF",
     tintAmount: 0,
     sun: "#FBE7A1",
+    night: 0,
   },
   dusk: {
     sky: ["#6B4A7A", "#9A5579", "#C8607A", "#F0A15E"],
@@ -44,6 +47,7 @@ export const PALETTES: Record<"day" | "dusk" | "night" | "dawn", Palette> = {
     tint: "#E8705A",
     tintAmount: 0.18,
     sun: "#F7C27A",
+    night: 0.35,
   },
   night: {
     sky: ["#2E3A5C", "#3A3F64", "#4A456E", "#5B4A7A"],
@@ -57,6 +61,7 @@ export const PALETTES: Record<"day" | "dusk" | "night" | "dawn", Palette> = {
     tint: "#4A3F7A",
     tintAmount: 0.42,
     sun: "#F6E7C8", // 夜里是月亮
+    night: 1,
   },
   dawn: {
     sky: ["#5B4A7A", "#A2748D", "#E8A0A0", "#F7D58B"],
@@ -70,5 +75,6 @@ export const PALETTES: Record<"day" | "dusk" | "night" | "dawn", Palette> = {
     tint: "#E8A0A0",
     tintAmount: 0.15,
     sun: "#FCE3A6",
+    night: 0.3,
   },
 };

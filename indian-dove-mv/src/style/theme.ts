@@ -19,6 +19,7 @@ function mixPalette(a: Palette, b: Palette, k: number): Palette {
     tint: c(a.tint, b.tint),
     tintAmount: a.tintAmount + (b.tintAmount - a.tintAmount) * k,
     sun: c(a.sun, b.sun),
+    night: a.night + (b.night - a.night) * k,
   };
 }
 
@@ -33,4 +34,35 @@ export function themeAt(frame: number): Theme {
   const k = b === a ? 0 : ease(Math.min(1, Math.max(0, (t - a.t) / (b.t - a.t))));
   const pal = mixPalette(PALETTES[a.palette], PALETTES[b.palette], k);
   return { ...pal, sepia: a.sepia + (b.sepia - a.sepia) * k };
+}
+
+/** 不随时间变化的主题（静帧、测试用） */
+export function staticTheme(name: keyof typeof PALETTES, sepia = 0): Theme {
+  return { ...PALETTES[name], sepia };
+}
+
+/** 两个主题之间插值（场景内部想自己控制过渡时用） */
+export function mixTheme(a: Theme, b: Theme, k: number): Theme {
+  return { ...mixPalette(a, b, k), sepia: a.sepia + (b.sepia - a.sepia) * k };
+}
+
+const hex = (c: string): [number, number, number] => {
+  if (c.startsWith("#")) {
+    const n = parseInt(c.slice(1), 16);
+    return [(n >> 16) / 255, ((n >> 8) & 255) / 255, (n & 255) / 255];
+  }
+  const m = c.match(/[\d.]+/g)?.map(Number) ?? [255, 255, 255];
+  return [m[0] / 255, m[1] / 255, m[2] / 255];
+};
+
+/**
+ * 环境光：把角色、道具这类「前景物体」按当前时段压暗偏色。
+ * 返回 feColorMatrix 的 values：每个通道乘以 (1-a) + a*tint，夜里再整体压暗一些。
+ */
+export function ambientMatrix(theme: Theme): string {
+  const [r, g, b] = hex(theme.tint);
+  const a = theme.tintAmount;
+  const dark = 1 - 0.22 * theme.night;
+  const k = (c: number) => ((1 - a) + a * c) * dark;
+  return `${k(r)} 0 0 0 0  0 ${k(g)} 0 0 0  0 0 ${k(b)} 0 0  0 0 0 1 0`;
 }
