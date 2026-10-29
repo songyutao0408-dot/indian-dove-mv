@@ -211,6 +211,7 @@ export const THEME_KEYS: ThemeKey[] = [
   { t: 0, palette: "day", sepia: 0, why: "白天开场" },
   { t: 127.5, palette: "day", sepia: 0, why: "S8 钟楼镜头开始转做旧" },
   { t: 133.0, palette: "day", sepia: 1, why: "主街空镜完全做旧" },
+  { t: 148.0, palette: "day", sepia: 1, why: "S9 说唱全段保持做旧（最后一句胶片烧穿成白）" },
   { t: 148.05, palette: "dusk", sepia: 0, why: "S10 开头胶片烧穿的白光褪去，直接进黄昏" },
   { t: 160.47, palette: "night", sepia: 0, why: "S10 中段（河道鸟瞰）完全入夜" },
   { t: 229.5, palette: "night", sepia: 0, why: "S15 篝火渐熄，开始转黎明" },
