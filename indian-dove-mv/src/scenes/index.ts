@@ -14,5 +14,8 @@ import { S10 } from "./S10";
 import { S11 } from "./S11";
 import { S12 } from "./S12";
 import { S13 } from "./S13";
+import { S14 } from "./S14";
+import { S15 } from "./S15";
+import { S16 } from "./S16";
 
-export const SCENES: Record<string, ShotComponent[]> = { S0, S1, S2, S3, S4, S5, S6, S7, S8, S9, S10, S11, S12, S13 };
+export const SCENES: Record<string, ShotComponent[]> = { S0, S1, S2, S3, S4, S5, S6, S7, S8, S9, S10, S11, S12, S13, S14, S15, S16 };
