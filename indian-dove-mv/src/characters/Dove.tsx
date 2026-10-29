@@ -483,7 +483,7 @@ export const Dove: React.FC<DoveProps> = ({
           <Smoke x={62} y={top - 20} frame={frame + 9} />
         </>
       )}
-      {ex === "talk" && <Bubble x={110} y={top - 150} w={250} h={100} tail={[112, top + 30]} text={text} fontSize={44} flip={facing === -1} />}
+      {ex === "talk" && text !== "" && <Bubble x={110} y={top - 150} w={250} h={100} tail={[112, top + 30]} text={text} fontSize={44} flip={facing === -1} />}
       {ex === "confused" && <QuestionMark x={140} y={top - 10} frame={frame} />}
       {(ex === "sleep" || (pose === "doze" && ex === "daze")) && <Zzz x={100} y={top} frame={frame} />}
       {ex === "shock" && (
