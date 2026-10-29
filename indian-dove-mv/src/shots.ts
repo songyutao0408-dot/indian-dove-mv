@@ -187,6 +187,6 @@ export const SHOT_PLAN: Record<string, ShotSpec[]> = {
     { at: 280.0, title: "大合跳", desc: "鼓点回来：全员康康舞踢腿大合跳，尘土跟着节拍扬起", cast: EVERYONE },
     { at: 286.3, title: "拉远日落", desc: "镜头慢慢拉远到整片沙漠，队伍越来越小，太阳下山", cast: EVERYONE },
     { at: 291.0, title: "光圈收缩", desc: "光圈收缩，只剩下老斑鸠的脸，它慢慢眨一下眼", cast: ["dove"] },
-    { at: 297.0, title: "结束卡", desc: "黑底木牌结束卡：词 方文山 / 曲 周杰伦 / 编曲 钟兴民 / 完；木牌轻轻晃，偶尔闪烁胶片黑点", cast: [] },
+    { at: 297.0, title: "结束卡", desc: "黑底木牌结束卡：词 方文山 / 曲 周杰伦 / 编曲 洪敬尧 / 完；木牌轻轻晃，偶尔闪烁胶片黑点", cast: [] },
   ],
 };
