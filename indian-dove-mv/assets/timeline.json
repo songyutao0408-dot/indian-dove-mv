@@ -1,0 +1,37 @@
+{
+  "song": "印第安老斑鸠",
+  "fps": 24,
+  "duration_note": "总时长以 song.mp3 实际长度为准（约 304 秒）",
+  "time_unit": "seconds",
+  "title_cards": [
+    { "t": 0.00, "until": 8.95, "card": "歌名卡" },
+    { "t": 8.95, "until": 17.91, "card": "作词卡" },
+    { "t": 17.91, "until": 26.0, "card": "作曲卡" }
+  ],
+  "sections": [
+    { "id": "S0",  "name": "前奏",           "start": 0.00,   "end": 35.82,  "mode": "day",    "note": "三张片头卡 + 26 秒后进入沙漠峡谷建立镜头" },
+    { "id": "S1",  "name": "主歌一·上",      "start": 35.82,  "end": 45.57,  "mode": "day",    "note": "泥鳅、海鸥、峡谷大风、画外质疑" },
+    { "id": "S2",  "name": "主歌一·中",      "start": 45.57,  "end": 56.13,  "mode": "day",    "note": "响尾蛇热昏、幻想雨季" },
+    { "id": "S3",  "name": "主歌一·下",      "start": 56.13,  "end": 66.53,  "mode": "day",    "note": "灰狼啃骨、秃鹰盘旋、野牛远方对冲" },
+    { "id": "S4",  "name": "导歌一+小间奏",  "start": 66.53,  "end": 81.32,  "mode": "day",    "note": "白蚁丘、老斑鸠亮相；72.02 起约 9 秒纯音乐，做主角定格和名牌" },
+    { "id": "S5",  "name": "副歌A·一",       "start": 81.32,  "end": 91.43,  "mode": "day",    "note": "老斑鸠特征介绍" },
+    { "id": "S6",  "name": "Hook·一",        "start": 91.43,  "end": 101.86, "mode": "day",    "note": "学人说话、害羞仙人掌、横走蜥蜴、怪事、像猫的狗" },
+    { "id": "S7",  "name": "副歌B·一",       "start": 101.86, "end": 112.35, "mode": "day",    "note": "安静、乌鸦偷窝、邂逅母斑鸠" },
+    { "id": "S8",  "name": "间奏一",         "start": 112.35, "end": 137.69, "mode": "day→sepia", "note": "约 25 秒纯音乐：约会片段 → 风滚草滚进小镇 → 正午 → 色调转为做旧" },
+    { "id": "S9",  "name": "说唱",           "start": 137.69, "end": 148.05, "mode": "sepia",  "note": "仅约 10 秒、7 句，每句 1–2 秒快切；最后一句时胶片烧穿" },
+    { "id": "S10", "name": "主歌二",         "start": 148.05, "end": 178.80, "mode": "dusk→night", "note": "对应 S1–S3 的内容，全部换机位和时段" },
+    { "id": "S11", "name": "导歌二",         "start": 178.80, "end": 188.52, "mode": "night",  "note": "月光下的白蚁丘；184.55 起约 4 秒纯音乐" },
+    { "id": "S12", "name": "副歌A·二",       "start": 188.52, "end": 199.08, "mode": "night",  "note": "同 S5 内容，换动作和角度" },
+    { "id": "S13", "name": "Hook·二",        "start": 199.08, "end": 209.09, "mode": "night",  "note": "开头是“休息一下”念白梗" },
+    { "id": "S14", "name": "副歌B·二",       "start": 209.09, "end": 219.46, "mode": "night",  "note": "同 S7 内容，夜晚版本" },
+    { "id": "S15", "name": "间奏二",         "start": 219.46, "end": 239.77, "mode": "night→dawn", "note": "约 20 秒纯音乐：篝火派对 → 日出，白天回归" },
+    { "id": "S16", "name": "副歌A·三",       "start": 239.77, "end": 249.80, "mode": "day",    "note": "含缺词梗" },
+    { "id": "S17", "name": "Hook·三",        "start": 249.80, "end": 260.26, "mode": "day",    "note": "全员开始聚集" },
+    { "id": "S18", "name": "副歌B·三",       "start": 260.26, "end": 271.00, "mode": "day",    "note": "最后一句约 267.83 开始；end 为估计值，按人声实际结束时间校准" },
+    { "id": "S19", "name": "尾奏",           "start": 271.00, "end": "audio_end", "mode": "sunset", "note": "约 33 秒：全员大合跳 → 拉远 → 日落 → 光圈收缩 → 结束卡" }
+  ],
+  "gags": [
+    { "id": "rest",         "start": 199.08, "end": 201.63, "note": "念白“休息一下”：老斑鸠躺进吊床，全员定格" },
+    { "id": "missing_word", "start": 245.35, "end": 247.40, "note": "这句只唱了半句：老斑鸠头上冒问号，敲自己的脑袋" }
+  ]
+}
