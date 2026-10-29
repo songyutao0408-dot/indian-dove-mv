@@ -22,24 +22,27 @@ const ShotHost: React.FC<{ shot: Shot }> = ({ shot }) => {
   );
 };
 
-const Shots: React.FC = () => {
+const Shots: React.FC<{ raw: boolean }> = ({ raw }) => {
   const g = useCurrentFrame();
   const theme = themeAt(g);
+  const seq = SHOTS.map((s) => (
+    <Sequence key={s.id} from={s.startFrame} durationInFrames={s.durationInFrames} name={`${s.id} ${s.title}`}>
+      <ShotHost shot={s} />
+    </Sequence>
+  ));
+  if (raw) return <AbsoluteFill>{seq}</AbsoluteFill>;
   return (
     <FilmLook frame={g} sepia={theme.sepia}>
-      {SHOTS.map((s) => (
-        <Sequence key={s.id} from={s.startFrame} durationInFrames={s.durationInFrames} name={`${s.id} ${s.title}`}>
-          <ShotHost shot={s} />
-        </Sequence>
-      ))}
+      {seq}
     </FilmLook>
   );
 };
 
-export const MV: React.FC = () => (
+/** raw = true：不加质感后期和字幕，只用于验收自查（检测内容本身有没有静止超过 2 秒） */
+export const MV: React.FC<{ raw?: boolean }> = ({ raw = false }) => (
   <AbsoluteFill style={{ background: "#120A05" }}>
-    <Audio src={staticFile("song.mp3")} />
-    <Shots />
-    <Lyrics />
+    {!raw && <Audio src={staticFile("song.mp3")} />}
+    <Shots raw={raw} />
+    {!raw && <Lyrics />}
   </AbsoluteFill>
 );
