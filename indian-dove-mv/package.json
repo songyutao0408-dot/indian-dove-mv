@@ -1,0 +1,25 @@
+{
+  "name": "indian-dove-mv",
+  "version": "0.1.0",
+  "private": true,
+  "description": "《印第安老斑鸠》纯代码动画 MV（Remotion）",
+  "scripts": {
+    "studio": "remotion studio",
+    "analyze": "python3 tools/analyze_audio.py",
+    "typecheck": "tsc --noEmit",
+    "prepare-data": "esbuild tools/prepare_data.ts --bundle --platform=node --log-level=warning --outfile=tools/.build/prepare_data.cjs && node tools/.build/prepare_data.cjs",
+    "report": "esbuild tools/report.ts --bundle --platform=node --log-level=warning --outfile=tools/.build/report.cjs && node tools/.build/report.cjs"
+  },
+  "dependencies": {
+    "@remotion/cli": "4.0.539",
+    "@remotion/fonts": "^4.0.539",
+    "@remotion/renderer": "^4.0.539",
+    "react": "19.2.0",
+    "react-dom": "19.2.0",
+    "remotion": "4.0.539"
+  },
+  "devDependencies": {
+    "@types/react": "19.2.2",
+    "typescript": "5.9.3"
+  }
+}

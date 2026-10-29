@@ -1,0 +1,7 @@
+node_modules/
+out/
+.remotion/
+*.log
+__pycache__/
+tools/.build/
+public/song.mp3
