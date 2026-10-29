@@ -256,3 +256,98 @@ export const Nest: React.FC<{ s?: number; twigs?: number }> = ({ s = 1, twigs = 
     </g>
   );
 };
+
+/** 木箱（说书用） */
+export const Crate: React.FC<{ s?: number }> = ({ s = 1 }) => (
+  <g transform={`scale(${s})`}>
+    <rect x={-90} y={-130} width={180} height={130} fill="#B5783E" {...ol} />
+    <path d="M -90 -130 L 90 0 M 90 -130 L -90 0" stroke="#8E5A34" strokeWidth={10} />
+    <rect x={-90} y={-130} width={180} height={130} fill="none" {...ol} />
+    {[-86, 86].map((x) => [-126, -4].map((y) => <circle key={`${x}${y}`} cx={x * 0.92} cy={y} r={4} fill={INK} />))}
+  </g>
+);
+
+/** 蜡烛（火苗一拍二地跳） */
+export const Candle: React.FC<{ s?: number; frame: number }> = ({ s = 1, frame }) => {
+  const f = onTwos(frame);
+  return (
+    <g transform={`scale(${s})`}>
+      <circle cx={0} cy={-80} r={40} fill="#F7D58B" opacity={0.25} />
+      <rect x={-12} y={-60} width={24} height={60} rx={4} fill={CREAM} {...dl} />
+      <path d={`M 0 -60 Q ${-10 + Math.sin(f) * 3} -78 0 ${-96 - (f % 4)} Q ${10 + Math.sin(f) * 3} -78 0 -60 Z`} fill="#F7D58B" stroke="#E07A4F" strokeWidth={3} />
+    </g>
+  );
+};
+
+/** 小木十字架（甲虫葬礼） */
+export const TinyCross: React.FC<{ s?: number }> = ({ s = 1 }) => (
+  <g transform={`scale(${s})`}>
+    <path d="M -40 0 Q 0 -30 40 0 Z" fill="#C99A62" {...dl} />
+    <rect x={-6} y={-90} width={12} height={80} fill="#8E5A34" {...dl} />
+    <rect x={-26} y={-72} width={52} height={11} fill="#8E5A34" {...dl} />
+  </g>
+);
+
+/** 吊床：两根木杆之间挂一张网，sag 控制下垂 */
+export const Hammock: React.FC<{ w?: number; sag?: number; swing?: number; children?: React.ReactNode }> = ({ w = 520, sag = 90, swing = 0, children }) => (
+  <g>
+    {[-w / 2, w / 2].map((x) => (
+      <rect key={x} x={x - 10} y={-320} width={20} height={320} fill="#7A4A2A" {...dl} />
+    ))}
+    <g transform={`rotate(${swing} 0 -260)`}>
+      <path d={`M ${-w / 2} -260 Q 0 ${-260 + sag * 2} ${w / 2} -260`} fill="none" stroke={INK} strokeWidth={4} />
+      {children}
+      <path d={`M ${-w / 2 + 20} -250 Q 0 ${-250 + sag * 2.2} ${w / 2 - 20} -250 L ${w / 2 - 50} -230 Q 0 ${-230 + sag * 2.2} ${-w / 2 + 50} -230 Z`} fill="#E8D7B5" {...ol} />
+      {Array.from({ length: 7 }, (_, i) => {
+        const x = -w / 2 + 70 + i * ((w - 140) / 6);
+        return <path key={i} d={`M ${x} ${-245 + sag * (1 - Math.pow((2 * x) / w, 2)) * 1.05} l 0 20`} stroke="#C0392B" strokeWidth={6} />;
+      })}
+    </g>
+  </g>
+);
+
+/** 闹钟：响的时候一抖一抖、冒声波 */
+export const AlarmClock: React.FC<{ s?: number; frame: number; ringing?: boolean }> = ({ s = 1, frame, ringing = true }) => {
+  const f = onTwos(frame);
+  const jig = ringing ? (f % 4 < 2 ? -8 : 8) : 0;
+  return (
+    <g transform={`scale(${s}) rotate(${jig})`}>
+      <path d="M -50 40 l -14 26 M 50 40 l 14 26" stroke={INK} strokeWidth={8} strokeLinecap="round" />
+      {[-38, 38].map((x) => (
+        <g key={x} transform={`rotate(${ringing ? (f % 4 < 2 ? 6 : -6) : 0} ${x} -64)`}>
+          <circle cx={x} cy={-64} r={22} fill="#D9A441" {...ol} />
+        </g>
+      ))}
+      <circle cx={0} cy={0} r={66} fill="#C0392B" {...ol} />
+      <circle cx={0} cy={0} r={50} fill={CREAM} {...dl} />
+      <path d="M 0 0 L 0 -34 M 0 0 L 24 10" stroke={INK} strokeWidth={6} strokeLinecap="round" />
+    </g>
+  );
+};
+
+/** 一张大饼（月亮在饿昏的老斑鸠眼里） */
+export const Flatbread: React.FC<{ r?: number }> = ({ r = 100 }) => (
+  <g>
+    <circle r={r} fill="#E2A65A" {...ol} />
+    <circle r={r * 0.82} fill="#EDBE72" />
+    {Array.from({ length: 16 }, (_, i) => (
+      <ellipse key={i} cx={Math.cos(i * 2.3) * r * 0.6 * ((i % 4) / 4 + 0.3)} cy={Math.sin(i * 2.3) * r * 0.6 * ((i % 4) / 4 + 0.3)} rx={5} ry={3} fill={CREAM} transform={`rotate(${i * 40})`} />
+    ))}
+    <path d={`M ${r * 0.62} ${-r * 0.78} a ${r * 0.22} ${r * 0.22} 0 0 0 ${r * 0.38} ${r * 0.3} L ${r} ${-r * 0.6} Z`} fill="#2E3A5C" />
+  </g>
+);
+
+/** 飞碟 + 吸光束 */
+export const UFO: React.FC<{ s?: number; frame: number; beam?: number }> = ({ s = 1, frame, beam = 1 }) => {
+  const f = onTwos(frame);
+  return (
+    <g transform={`scale(${s})`}>
+      {beam > 0 && <path d={`M -60 20 L -200 ${420 * beam} L 200 ${420 * beam} L 60 20 Z`} fill="#F7E36A" opacity={0.35} />}
+      <ellipse cx={0} cy={-26} rx={60} ry={46} fill="#BFE6F2" {...ol} />
+      <ellipse cx={0} cy={0} rx={150} ry={36} fill="#9AA6B0" {...ol} />
+      {[-100, -50, 0, 50, 100].map((x, i) => (
+        <circle key={x} cx={x} cy={6} r={9} fill={(i + Math.floor(f / 4)) % 2 ? "#F7E36A" : "#E8738F"} {...thin} />
+      ))}
+    </g>
+  );
+};

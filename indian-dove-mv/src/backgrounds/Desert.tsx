@@ -28,6 +28,7 @@ export type DesertProps = {
   /** 地平线高度（屏幕 y） */
   horizon?: number;
   seed?: number;
+  /** 太阳 / 月亮在无穷远，位置是屏幕坐标，不随横移偏移 */
   sun?: { x: number; y: number; r?: number; face?: "none" | "smug" | "yawn" | "sleepy" | "wave" };
   moon?: { x: number; y: number; r?: number; face?: "none" | "wink" | "calm" };
   /** 风力 0–1：草丛、灌木摆动幅度 */
@@ -101,12 +102,12 @@ export const Desert: React.FC<DesertProps> = ({
       {bands}
       {stars && <StarField frame={frame} theme={theme} height={H} offsetX={camX * PARALLAX.sky} />}
       {sun && (
-        <g transform={`translate(${sun.x - camX * PARALLAX.sky} ${sun.y})`}>
+        <g transform={`translate(${sun.x} ${sun.y})`}>
           <Sun r={sun.r ?? 90} frame={frame} color={theme.sun} face={sun.face} />
         </g>
       )}
       {moon && (
-        <g transform={`translate(${moon.x - camX * PARALLAX.sky} ${moon.y})`}>
+        <g transform={`translate(${moon.x} ${moon.y})`}>
           <Moon r={moon.r ?? 80} frame={frame} face={moon.face} glow={theme.night} />
         </g>
       )}
