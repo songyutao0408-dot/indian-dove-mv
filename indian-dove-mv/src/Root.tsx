@@ -9,6 +9,7 @@ import { SceneStill, type SceneVariant } from "./compositions/SceneStills";
 import { THEME_PREVIEW_FRAMES, ThemePreview } from "./compositions/ThemePreview";
 import { TimelineChart } from "./compositions/TimelineChart";
 import { fontsReady } from "./fonts";
+import { MV } from "./MV";
 import { DURATION_IN_FRAMES, FPS, HEIGHT, WIDTH } from "./timeline";
 
 // 等字体加载完再渲染第一帧
@@ -17,6 +18,8 @@ fontsReady.then(() => continueRender(handle));
 
 export const RemotionRoot: React.FC = () => (
   <>
+    {/* 正片 */}
+    <Composition id="MV" component={MV} durationInFrames={DURATION_IN_FRAMES} fps={FPS} width={WIDTH} height={HEIGHT} />
     {/* 检查点 1：分镜对位预览（文字卡 + 正式字幕 + 原曲） */}
     <Composition id="Animatic" component={Animatic} durationInFrames={DURATION_IN_FRAMES} fps={FPS} width={WIDTH} height={HEIGHT} />
     {/* 检查点 1：段落时间表静态图 */}

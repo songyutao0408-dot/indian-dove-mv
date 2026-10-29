@@ -5,14 +5,14 @@
 
 ## 当前状态
 
-**检查点 3 已完成，等待确认。** 检查点 1、2 已确认。下一步是检查点 4（按段落逐个制作，每 2–3 段出 540p 预览）。
+**检查点 4 进行中：S0–S2 已完成并出了预览**（`previews/cp4_S0-S2_540p.mp4`）。检查点 1–3 已确认。下一批是 S3–S5。
 
 | 检查点 | 状态 | 成果 |
 |---|---|---|
 | 1. 工程 + 音频分析 + 段落时间表 | ✅ 已确认 | `checkpoints/CP1_段落时间表.md`、`checkpoints/cp1_timeline.png`、`previews/cp1_animatic_540p.mp4` |
 | 2. 全部角色 + 角色设定图 | ✅ 已确认 | `checkpoints/cp2_cast_lineup.png`、`cp2_dove_expressions.png`、`cp2_cast_key_poses.png`、`previews/cp2_motion_test_540p.mp4` |
-| 3. 背景 + 小镇 + 质感 overlay | ✅ 完成，待确认 | `checkpoints/cp3_1_day.jpg` … `cp3_8_fx.jpg`、`previews/cp3_theme_parallax_540p.mp4` |
-| 4. 逐段制作（每 2–3 段出 540p 预览） | ⏳ 未开始 | |
+| 3. 背景 + 小镇 + 质感 overlay | ✅ 已确认 | `checkpoints/cp3_1_day.jpg` … `cp3_8_fx.jpg`、`previews/cp3_theme_parallax_540p.mp4` |
+| 4. 逐段制作（每 2–3 段出 540p 预览） | 🔄 S0–S2 完成 | `previews/cp4_S0-S2_540p.mp4` |
 | 5. 540p 完整预览 → 1080p 正式版 | ⏳ 未开始 | |
 
 ## 检查点 1 做了什么
@@ -79,20 +79,31 @@
 - `FilmBurn` 里 `useSvgId` 要在提前 return 之前调用（hooks 规则）。
 - 更新 PROGRESS.md 时别整段切片替换，容易把「卡在哪 / 下一步」误删（检查点 2 时发生过）。
 
-## 待用户确认的问题（检查点 3）
+## 检查点 3 的确认结果
 
-1. 各时段背景、小镇、篝火、白蚁丘的样子是否 OK。
-2. 质感后期（颗粒、抖动、暗角、褪色、做旧）的强度是否合适。
+背景、小镇、质感全部通过（用户：「可以」）。
+
+## 检查点 4 的做法（逐段制作）
+
+- `src/MV.tsx`：正片合成。`<Audio>` 原曲；每个镜头一个 `<Sequence>`，镜头组件从 `SCENES[段落][序号]` 取，没做的用 `scenes/Placeholder.tsx`（分镜文字卡）；整体包 `FilmLook`（sepia 读 `themeAt`）；`Lyrics` 在最上层、不受滤镜影响。
+- `src/scenes/common.tsx`：`useShot()` 拿到镜头上下文（局部帧 f、全片帧 g、进度 p、秒数 t/T、当前主题 theme）；`Layer`、`Stage`（自动套环境光）、`At`（摆位）、`Cam`（平滑镜头运动）、`shake`、`beatPulse/beatHop/beatPhaseAt`（跟拍）、`lerp/pop/ease*`。
+- 角色动作一拍二：直接把 `g`（全片帧）传给角色，角色内部 `onTwos`；镜头、视差用连续帧保持平滑。
+- 跨镜头连续的画面（比如三张片头卡）用全片秒数 T 计算，切镜头时无缝。
+- 预览渲染：`npx remotion render src/index.ts MV previews/cp4_XX_540p.mp4 --frames=起-止 --scale=0.5 --crf=24`（起止帧见 `node tools/.build/list_shots.cjs "S3|S4"`，先 `npx esbuild tools/list_shots.ts --bundle --platform=node --outfile=tools/.build/list_shots.cjs`）。
+
+### 已完成的段落
+
+- **S0**（`TitleCards.tsx` + `scenes/S0.tsx`）：放射状太阳光芒 + 挂绳木牌，开场掉下来回弹；8.95 / 17.91 木牌翻转；风滚草三次滚过卡前；老斑鸠 4.6–7.1 秒从木牌后探头（最后吓一跳缩回），18.6 秒掉到作曲卡顶上睡觉；24.6–25.8 光圈收到它身上 → S0-4 光圈打开、峡谷四层视差大横移、天上秃鹰小点盘旋 → S0-5 低机位大风、沙粒、风滚草一路滚到镜头前糊满画面。
+- **S1**（`scenes/S1.tsx`）：泥鳅钻沙（尘土）跟拍左右张望 → 海鸥叼薯条飞过，泥鳅视线跟随，薯条掉下插进沙里，泥鳅缩回 → 峡谷大风（四团风滚草、仙人掌被吹弯、速度线、跟拍加强的镜头晃动）→ 大石头空镜 + 画外气泡「? 真的假的」。
+- **S2**（`scenes/S2.tsx`，新增 `backgrounds/Riverbed.tsx`）：干河床上热昏的响尾蛇（热浪扭曲 + 热气 + 慢推）→ 太阳大特写往下呼热气，甩镜头到蛇尾巴「沙…沙…」→ 思维气泡长出来、镜头推进气泡到满屏沼泽（下雨、青蛙「呱」、蛇泡在泥水里）→ 「啪！」气泡破掉回到现实。`SwampDream` 留给 S10 复用（换演法）。
 
 ## 卡在哪
 
-没有卡住。等确认检查点 3。
+没有卡住。
 
-## 下一步（检查点 4）
+## 下一步
 
-1. 写 `src/MV.tsx` 主合成：`<Audio>` 原曲 + 按 `SHOTS` 用 `<Sequence>` 排镜头 + `FilmLook`（sepia 读 `themeAt`）+ `Lyrics` + `TitleCards`。
-2. `src/scenes/S0.tsx` … `S19.tsx`：每段一个文件，导出该段每个镜头的渲染函数（镜头号见 `CP1_段落时间表.md`）。
-3. 顺序：S0–S2 → 预览 → S3–S5 → 预览 → … 每 2–3 段渲染一版 540p 片段到 `previews/cp4_*.mp4`。
+S3（灰狼、秃鹰、野牛）→ S4（白蚁丘、老斑鸠登场、亮相定格、大哈欠）→ S5（老斑鸠特征介绍），完成后渲染 `previews/cp4_S3-S5_540p.mp4`。
 
 ## 环境备忘（新容器需要重新装）
 
