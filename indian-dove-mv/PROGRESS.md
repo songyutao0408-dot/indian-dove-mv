@@ -5,15 +5,15 @@
 
 ## 当前状态
 
-**检查点 4 完成：S0–S19 全部 101 个镜头都已制作**（S9–S13 用户已看过、说继续）。最后两批 S14–S16、S17–S19 预览已发给用户，**等用户检查**。下一步是检查点 5：540p 完整预览 → 1080p 正式版。
+**全部完成。** 五个检查点都已完成，1080p 成片已在对话里发给用户（成片 437MB 超过 GitHub 单文件上限，按用户要求不进仓库，见 `final/README.md`）。
 
 | 检查点 | 状态 | 成果 |
 |---|---|---|
 | 1. 工程 + 音频分析 + 段落时间表 | ✅ 已确认 | `checkpoints/CP1_段落时间表.md`、`checkpoints/cp1_timeline.png`、`previews/cp1_animatic_540p.mp4` |
 | 2. 全部角色 + 角色设定图 | ✅ 已确认 | `checkpoints/cp2_cast_lineup.png`、`cp2_dove_expressions.png`、`cp2_cast_key_poses.png`、`previews/cp2_motion_test_540p.mp4` |
 | 3. 背景 + 小镇 + 质感 overlay | ✅ 已确认 | `checkpoints/cp3_1_day.jpg` … `cp3_8_fx.jpg`、`previews/cp3_theme_parallax_540p.mp4` |
-| 4. 逐段制作（每 2–3 段出 540p 预览） | ✅ 完成，待确认最后两批 | `previews/cp4_S0-S2`、`S3-S5`、`S6-S8`、`S9-S10`、`S11-S13`、`S14-S16`、`S17-S19`（均为 `_540p.mp4`） |
-| 5. 540p 完整预览 → 1080p 正式版 | ⏳ 未开始 | |
+| 4. 逐段制作（每 2–3 段出 540p 预览） | ✅ 已确认 | `previews/cp4_S0-S2`、`S3-S5`、`S6-S8`、`S9-S10`、`S11-S13`、`S14-S16`、`S17-S19`（均为 `_540p.mp4`） |
+| 5. 540p 完整预览 → 1080p 正式版 | ✅ 完成 | `previews/cp5_full_540p.mp4`、`checkpoints/CP5_验收自查.md`、1080p 成片已发给用户 |
 
 ## 检查点 1 做了什么
 
@@ -126,16 +126,25 @@
 - 太阳/月亮的位置是屏幕坐标，不随 `camX` 偏移（之前随横移量累积偏移，大 camX 的镜头里会跑出画面，S9–S10 时修正，前面几段的太阳位置也跟着回到设计位置）。
 - `Cam` 缩放小于 1 会露出黑边，起始 zoom 至少 1。
 
+## 检查点 5 做了什么
+
+- 540p 完整预览（304.54 秒，音画时长一致），再从 1080p 母版缩出最终版替换。
+- 验收自查（`checkpoints/CP5_验收自查.md`）：
+  - 老斑鸠主要出场约 50.9%（≥40%）。
+  - 字幕：字幕帧与 LRC 最大误差 20 毫秒；69 句都在 ±0.15 秒内检测到人声起音，中位 23 毫秒（`tools/check_lyrics.py`）。
+  - 静止画面：用 raw 模式（去掉质感后期和字幕）渲一版检测，第一次发现 S7-1、S19-1 两处超过 2 秒，加了微动后复查 0 处（`tools/check_static.py`）。
+  - 重复段落逐段对照、间奏和尾奏内容见文档里的表。
+- 1080p：Remotion 渲染约 40 分钟，母版 `out/indian-dove-mv-1080p.mp4`（CRF 21，437MB）。对话附件上限 400MB，所以另外两遍编码出 7.2Mbps 的分享版（273MB）发给用户。
+
 ## 卡在哪
 
-没有卡住。等用户看 S14–S16、S17–S19 两批预览。
+没有。项目已完成。
 
-## 下一步
+## 如果之后要改
 
-检查点 5：
-1. 渲染 540p 完整预览 `previews/cp5_full_540p.mp4`（全片约 15 分钟渲染），核对音画同步、字幕时间。
-2. 按 brief 第九部分逐条自查验收标准（老斑鸠出场 ≥40%、字幕误差 ≤0.15 秒、无超过 2 秒的静止画面、重复段落无相同镜头、间奏和尾奏有完整内容）。
-3. 用户确认后渲染 1080p：`npx remotion render src/index.ts MV out/indian-dove-mv-1080p.mp4`，再复制到 `final/`（注意 GitHub 单文件 100MB 上限，必要时调码率）。
+1. 改对应的 `src/scenes/Sx.tsx`（镜头号见 `checkpoints/CP1_段落时间表.md`）。
+2. 局部预览：`npx remotion render src/index.ts MV previews/xxx.mp4 --frames=起-止 --scale=0.5 --crf=24`。
+3. 改完重跑静止检测（raw 模式）和 1080p 渲染。
 
 ## 环境备忘（新容器需要重新装）
 
